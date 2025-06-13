@@ -36,6 +36,19 @@
       color: #3d9970;
       font-weight: bold;
     }
+    .edit-btn {
+  margin-top: 1em;
+  padding: 0.75em 1.5em;
+  font-size: 1em;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.edit-btn:hover {
+  background: #c82333;
+}
   </style>
 </head>
 <body>
@@ -98,7 +111,28 @@ rating = 5 + ((0.75 - 0.5) × 10) + (3 ÷ 5) = 8.10
     <h2>Changelogs</h2>
     <p>See what’s new, what’s fixed, and what’s coming next:</p>
     <p><a href="updates.html">View Full Updates Log →</a></p>
+    <h2></h2>
+    <button id="editPlayerBtn" class="edit-btn">🛠 Edit Players</button>
   </main>
+
+
   <script src="nav.js"></script>
 </body>
+<script>
+  document.getElementById("editPlayerBtn")?.addEventListener("click", () => {
+    const player = prompt("Enter the exact name of the player you'd like to edit or remove:");
+    if (player) {
+      const confirmed = confirm(`Are you sure you want to remove "${player}" from the database? This cannot be undone.`);
+      if (confirmed) {
+        firebase.firestore().collection("users").doc(player).delete().then(() => {
+          alert("Player removed.");
+          window.location.href = "index.html";
+        }).catch(err => {
+          console.error("Error removing player:", err);
+          alert("Error: Player not found or failed to delete.");
+        });
+      }
+    }
+  });
+</script>
 </html>
