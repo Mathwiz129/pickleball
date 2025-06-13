@@ -7,45 +7,61 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// Show current user name
 const currentUser = localStorage.getItem("currentUser");
-document.getElementById("welcomeName").innerText = `Logged in as: ${currentUser}`;
+if (currentUser) {
+  const welcome = document.getElementById("welcomeName");
+  if (welcome) welcome.innerText = `Logged in as: ${currentUser}`;
+}
 
-db.collection("users").get().then(snapshot => {
-  const players = [];
+function loadLeaderboard() {
+  const sortValue = document.getElementById("sortBy")?.value || "total";
+  const container = document.getElementById("cardContainer");
+  if (container) container.innerHTML = "";
 
-  snapshot.forEach(doc => {
-    const data = doc.data() || {};
-    const wins = data.wins || 0;
-    const losses = data.losses || 0;
-    players.push({
-      name: doc.id,
-      wins: wins,
-      losses: losses,
-      total: wins + losses
+  db.collection("users").get().then(snapshot => {
+    const players = [];
+
+    snapshot.forEach(doc => {
+      const data = doc.data() || {};
+      const singles = data.singlesWins || 0;
+      const doubles = data.doublesWins || 0;
+      const played = data.matchesPlayed ?? singles + doubles;
+
+      players.push({
+        name: doc.id,
+        singlesWins: singles,
+        doublesWins: doubles,
+        matchesPlayed: played,
+        totalWins: singles + doubles
+      });
     });
+
+    players.sort((a, b) => {
+      if (sortValue === "singles") return b.singlesWins - a.singlesWins;
+      if (sortValue === "doubles") return b.doublesWins - a.doublesWins;
+      return b.totalWins - a.totalWins;
+    });
+
+    players.forEach((player, index) => {
+      const card = document.createElement("div");
+      card.className = "player-card";
+      card.innerHTML = `
+        <div class="card-body">
+          <h4>#${index + 1} – ${player.name}</h4>
+          <p><strong>Singles Wins:</strong> ${player.singlesWins}</p>
+          <p><strong>Doubles Wins:</strong> ${player.doublesWins}</p>
+        </div>
+        <div class="card-stats">
+          <span>Matches Played:</span>
+          <span>${player.matchesPlayed}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }).catch(err => {
+    console.error("Error loading leaderboard:", err);
   });
+}
 
-  // Sort by wins descending
-  players.sort((a, b) => b.wins - a.wins);
-
-  const cardContainer = document.getElementById("cardContainer");
-
-  players.forEach((player, index) => {
-    const card = document.createElement("div");
-    card.className = "player-card";
-    card.innerHTML = `
-      <div class="card-body">
-        <h4>#${index + 1} – ${player.name}</h4>
-        <p><strong>Wins:</strong> ${player.wins}</p>
-        <p><strong>Losses:</strong> ${player.losses}</p>
-      </div>
-      <div class="card-stats">
-        <span>Matches Played:</span>
-        <span>${player.total}</span>
-      </div>
-    `;
-    cardContainer.appendChild(card);
-  });
-}).catch(err => {
-  console.error("Error loading leaderboard:", err);
-});
+loadLeaderboard();

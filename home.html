@@ -96,13 +96,28 @@
     }
 
     .enter-btn {
-      background: #ffffff10;
-      color: white;
-      border: none;
-      padding: 0.5em 1em;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+  background: #ffffff10;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .enter-btn {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 0.75em;
+    margin-top: 0.5em;
+  }
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -122,7 +137,15 @@
   </div>
 
   <main>
-    <h3>Leaderboard</h3>
+    <h3 style="display:flex;align-items:center;justify-content:space-between;">
+  Leaderboard
+  <select id="sortBy" onchange="loadLeaderboard()" style="margin-left: 1em;">
+    <option value="total">All Wins</option>
+    <option value="singles">Singles Wins</option>
+    <option value="doubles">Doubles Wins</option>
+  </select>
+</h3>
+
     <div id="cardContainer" class="card-grid"></div>
   </main>
 
