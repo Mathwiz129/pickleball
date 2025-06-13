@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>About – Chattpickleball</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDULG3iBGIkqRebSMZuBzXFdabQArQCJs4",
+      authDomain: "chattpickleball.firebaseapp.com",
+      projectId: "chattpickleball"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <style>
     html {
       scrollbar-gutter: stable;
@@ -37,18 +47,18 @@
       font-weight: bold;
     }
     .edit-btn {
-  margin-top: 1em;
-  padding: 0.75em 1.5em;
-  font-size: 1em;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.edit-btn:hover {
-  background: #c82333;
-}
+      margin-top: 2em;
+      padding: 0.75em 1.5em;
+      font-size: 1em;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .edit-btn:hover {
+      background: #c82333;
+    }
   </style>
 </head>
 <body>
@@ -56,14 +66,15 @@
   <main>
     <h2>About</h2>
     <p>
-      Chattpickleball is a really barebones app built for a small group of Chattanooga-area players who just want to track games.
-    It’s not meant for broad public use (at least not yet), but if you’ve stumbled across it you can definitely use it-just be careful.
+      Chattpickleball is a barebones app built for a small group of Chattanooga-area players who just want to track games.
+      It’s not meant for broad public use (at least not yet), but if you’ve stumbled across it—you’re welcome to use it. Just play nice.
     </p>
     <p>
-     Technically, data is public. But there’s no search or indexing, and unless you’re poking around in developer tools, most info is hard to get to. It’s not secure in a traditional sense, but for our tiny use case, it's fine for now.
+      Technically, data is public. But there’s no search or indexing, and unless you’re poking around in developer tools,
+      most info is hard to get to. It’s not secure in a traditional sense, but for our tiny use case, it’s fine for now.
     </p>
     <p>
-      If this ever does expand-adding logins, match verification, privacy layers-I’m open to it. But right now it’s a side project designed for a specific group. Feedback always welcome.
+      If this ever expands—adding logins, match verification, privacy layers—I’m open to it. But right now it’s a side project designed for a tight circle. Feedback welcome.
     </p>
 
     <h2>How Rankings Are Calculated</h2>
@@ -73,66 +84,55 @@
     <ul>
       <li><strong>Win ratio</strong> (wins ÷ matches played)</li>
       <li><strong>Average scoring margin</strong> (points scored minus points allowed per match)</li>
-      <li><strong>Match volume</strong> (slight penalty applied if fewer than 3 total matches)</li>
+      <li><strong>Match volume</strong> (penalty if fewer than 3 matches)</li>
     </ul>
 
-    <p>The formula used to calculate each player’s rating is:</p>
-
-    <pre style="background:#f9f9f9; padding:1em; border-radius:6px; overflow:auto;">
+    <p>Formula:</p>
+    <pre style="background:#f9f9f9; padding:1em; border-radius:6px;">
 rating = 5 + ((winRatio - 0.5) × 10) + (avgMargin ÷ 5) - penalty
     </pre>
 
     <p><strong>Where:</strong></p>
     <ul>
       <li><code>winRatio</code> = wins / total matches</li>
-      <li><code>avgMargin</code> = (total points scored - total points allowed) / total matches</li>
-      <li><code>penalty</code> = 1.0 if matches played &lt; 3, otherwise 0</li>
+      <li><code>avgMargin</code> = (points scored - points allowed) / matches</li>
+      <li><code>penalty</code> = 1.0 if matches < 3, otherwise 0</li>
     </ul>
 
-    <p>
-      Ratings are clamped between <strong>1.00 and 10.00</strong> to keep things fair and intuitive.
-      Players start near 5.00 and rise as they win with consistency and strong margins.
-    </p>
-
     <h4>Example</h4>
-    <p>
-      If a player has played 8 matches with 6 wins, scored 88 points and allowed 64:
-    </p>
-    <pre style="background:#f9f9f9; padding:1em; border-radius:6px; overflow:auto;">
-winRatio = 6 / 8 = 0.75
-avgMargin = (88 - 64) / 8 = 3
+    <pre style="background:#f9f9f9; padding:1em; border-radius:6px;">
+6 wins out of 8 → winRatio = 0.75
+(88 - 64) / 8 → avgMargin = 3
 rating = 5 + ((0.75 - 0.5) × 10) + (3 ÷ 5) = 8.10
     </pre>
 
-    <p>
-      If that same player had only played 2 matches, a 1.0 penalty would lower their rating to 7.10.
-    </p>
+    <p>If only 2 matches had been played, rating would be 7.10 due to the penalty.</p>
 
     <h2>Changelogs</h2>
-    <p>See what’s new, what’s fixed, and what’s coming next:</p>
     <p><a href="updates.html">View Full Updates Log →</a></p>
-    <h2></h2>
+
+    <h2>Admin Tools</h2>
     <button id="editPlayerBtn" class="edit-btn">🛠 Edit Players</button>
   </main>
-
-
   <script src="nav.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("editPlayerBtn")?.addEventListener("click", () => {
+        const player = prompt("Enter the exact name of the player you'd like to remove:");
+        if (player) {
+          const confirmDelete = confirm(`Are you sure you want to remove "${player}" from the database? This cannot be undone.`);
+          if (confirmDelete) {
+            firebase.firestore().collection("users").doc(player).delete().then(() => {
+              alert("Player removed.");
+              window.location.href = "index.html";
+            }).catch(err => {
+              console.error("Error removing player:", err);
+              alert("Error: Could not remove player.");
+            });
+          }
+        }
+      });
+    });
+  </script>
 </body>
-<script>
-  document.getElementById("editPlayerBtn")?.addEventListener("click", () => {
-    const player = prompt("Enter the exact name of the player you'd like to edit or remove:");
-    if (player) {
-      const confirmed = confirm(`Are you sure you want to remove "${player}" from the database? This cannot be undone.`);
-      if (confirmed) {
-        firebase.firestore().collection("users").doc(player).delete().then(() => {
-          alert("Player removed.");
-          window.location.href = "index.html";
-        }).catch(err => {
-          console.error("Error removing player:", err);
-          alert("Error: Player not found or failed to delete.");
-        });
-      }
-    }
-  });
-</script>
 </html>
