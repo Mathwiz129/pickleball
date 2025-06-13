@@ -79,6 +79,22 @@ function loadMatchHistory() {
       matchContainer.textContent = "Error loading match history.";
     });
 }
+document.getElementById("removePlayerBtn")?.addEventListener("click", () => {
+  const name = new URLSearchParams(window.location.search).get("player");
+  if (!name) return;
+
+  const confirmed = confirm(`Are you sure you want to remove "${name}" from the database? This cannot be undone.`);
+
+  if (confirmed) {
+    db.collection("users").doc(name).delete().then(() => {
+      alert("Player removed.");
+      window.location.href = "index.html";
+    }).catch(error => {
+      console.error("Error removing player:", error);
+      alert("There was an error removing the player.");
+    });
+  }
+});
 
 loadProfile();
 loadMatchHistory();

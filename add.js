@@ -9,32 +9,37 @@ const db = firebase.firestore();
 
 function addPlayer() {
   const name = document.getElementById("playerName").value.trim();
+  const email = document.getElementById("email").value.trim();
   const message = document.getElementById("message");
 
-  if (!name) {
-    message.textContent = "Please enter a player name.";
+  if (!name || !email) {
+    message.textContent = "Please enter both a name and an email.";
+    message.style.color = "red";
     return;
   }
 
-  const ref = db.collection("users").doc(name);
-
-  ref.get().then(doc => {
+  db.collection("users").doc(name).get().then(doc => {
     if (doc.exists) {
       message.textContent = "That player already exists.";
+      message.style.color = "red";
     } else {
-      return ref.set({
+      db.collection("users").doc(name).set({
         singlesWins: 0,
         doublesWins: 0,
-        matchesPlayed: 0
+        matchesPlayed: 0,
+        totalWins: 0,
+        rating: null,
+        email: email
       }).then(() => {
-        message.textContent = `${name} has been added! Redirecting...`;
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1500); // Delay to show message before redirect
+        console.log("Saved with email:", email);
+        message.textContent = "Player added successfully!";
+        message.style.color = "#3d9970";
+        setTimeout(() => window.location.href = "index.html", 1200);
+      }).catch(err => {
+        console.error("Error adding player:", err);
+        message.textContent = "Something went wrong.";
+        message.style.color = "red";
       });
     }
-  }).catch(err => {
-    console.error("Error adding player:", err);
-    message.textContent = "Something went wrong. Try again.";
   });
 }

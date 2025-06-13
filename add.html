@@ -22,6 +22,7 @@
       max-width: 400px;
       margin: 2em auto;
       padding: 2em;
+      padding-right: 4em;
       background: white;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -38,6 +39,7 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 1em;
+      box-sizing: border-box;
     }
     button {
       width: 100%;
@@ -57,14 +59,18 @@
   </style>
 </head>
 <body>
-  
   <header><h2>Chattpickleball – Add Player</h2></header>
   <main>
     <h3>Create a New Player</h3>
-    <input type="text" id="playerName" placeholder="Enter player name" />
+    <label for="playerName">Name:</label>
+    <input type="text" id="playerName" placeholder="Enter player name" required />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="name@example.com" required />
+
     <button onclick="addPlayer()">Add Player</button>
     <p id="message"></p>
   </main>
-    <script src="nav.js"></script>
+  <script src="nav.js"></script>
 </body>
 </html>
