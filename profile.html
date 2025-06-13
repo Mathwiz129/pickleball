@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Player Profile – Chattpickleball</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="profile.js" defer></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+    }
+    header {
+      background: #3d9970;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    main {
+      max-width: 700px;
+      margin: 2em auto;
+      padding: 2em;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    h2, h3 {
+      margin-top: 0;
+      color: #3d9970;
+    }
+    .stat, .match {
+      margin: 0.5em 0;
+      font-size: 1.1em;
+    }
+    .match {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5em;
+    }
+    .match:last-child {
+      border-bottom: none;
+    }
+    .back-btn {
+      margin-top: 2em;
+      padding: 0.75em 1.5em;
+      font-size: 1em;
+      background: #3d9970;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header><h1>Player Profile</h1></header>
+  <main>
+    <h2 id="playerName">Loading...</h2>
+
+    <div class="stat">Singles Wins: <strong id="singlesWins">–</strong></div>
+    <div class="stat">Doubles Wins: <strong id="doublesWins">–</strong></div>
+    <div class="stat">Matches Played: <strong id="matchesPlayed">–</strong></div>
+    <div class="stat">Win Ratio: <strong id="winRatio">–</strong></div>
+    <div class="stat">Rating: <strong id="rating">–</strong></div>
+
+    <h3 style="margin-top: 2em;">Match History</h3>
+    <div id="matchHistory">Loading history...</div>
+
+    <button class="back-btn" onclick="window.location.href='index.html'">⬅ Back to Leaderboard</button>
+  </main>
+</body>
+</html>

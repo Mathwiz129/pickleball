@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
   <title>Enter Match – Chattpickleball</title>
-  <meta charset="UTF-8">
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="match.js" defer></script>
@@ -10,112 +10,115 @@
     body {
       font-family: sans-serif;
       margin: 0;
-      padding: 1em;
       background: #f5f5f5;
     }
-
     header {
-      background: #3d9970;
+      background-color: #3d9970;
       color: white;
       padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      text-align: center;
     }
-
     main {
-      max-width: 600px;
+      max-width: 900px;
       margin: 2em auto;
+      padding: 2em;
       background: white;
-      padding: 1.5em;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-
     label {
       display: block;
-      margin-top: 1em;
+      margin-bottom: 0.3em;
       font-weight: bold;
     }
-
-    select, button {
+    select, input {
       width: 100%;
-      margin-top: 0.5em;
-      padding: 0.75em;
+      margin-bottom: 1em;
+      padding: 0.6em;
       border-radius: 6px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
+      font-size: 1em;
     }
-
-    .court {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1em;
-      margin-top: 1em;
+    .match-type {
+      margin-bottom: 2em;
     }
-
-    .side {
-      background-color: #f0f0f0;
+    .match-columns {
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+    }
+    .team-column {
+      flex: 1;
+      min-width: 300px;
+      background: #f9f9f9;
+      padding: 1.5em;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
       padding: 1em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .winner-btn {
       background: #3d9970;
       color: white;
+      font-size: 1.1em;
       border: none;
-      margin-top: 1.5em;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
     }
-
     #message {
       margin-top: 1em;
       font-weight: bold;
-      color: #3d9970;
       text-align: center;
+    }
+    @media (max-width: 700px) {
+      .match-columns {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-
-<header>
-  <h2>Enter Match</h2>
-  <button onclick="window.location.href='home.html'" style="background:none;border:none;color:white;text-decoration:underline;cursor:pointer;">Back to Home</button>
-</header>
-
-<main>
-  <label for="matchType">Match Type</label>
-  <select id="matchType" onchange="adjustMatchType()">
-    <option value="singles">Singles</option>
-    <option value="doubles">Doubles</option>
-  </select>
-
-  <div class="court">
-    <div class="side" id="sideA">
-      <label>Team A</label>
-      <select class="player-select" id="playerA1"><option value="">Select Player A1</option></select>
-      <select class="player-select doubles-only" id="playerA2" style="display:none;"><option value="">Select Player A2</option></select>
+  
+  <header><h2>Enter Match Results</h2></header>
+  <main>
+    <div class="match-type">
+      <label>Match Type</label>
+      <select id="matchType" onchange="adjustMatchType()">
+        <option value="singles">Singles</option>
+        <option value="doubles">Doubles</option>
+      </select>
     </div>
 
-    <div class="side" id="sideB">
-      <label>Team B</label>
-      <select class="player-select" id="playerB1"><option value="">Select Player B1</option></select>
-      <select class="player-select doubles-only" id="playerB2" style="display:none;"><option value="">Select Player B2</option></select>
+    <div class="match-columns">
+      <div class="team-column">
+        <label>Team A - Player 1</label>
+        <select id="playerA1" class="player-select"></select>
+
+        <div class="doubles-only">
+          <label>Player 2</label>
+          <select id="playerA2" class="player-select"></select>
+        </div>
+
+        <label>Score</label>
+        <input type="number" id="scoreA" placeholder="e.g. 11" />
+      </div>
+
+      <div class="team-column">
+        <label>Team B - Player 1</label>
+        <select id="playerB1" class="player-select"></select>
+
+        <div class="doubles-only">
+          <label>Player 2</label>
+          <select id="playerB2" class="player-select"></select>
+        </div>
+
+        <label>Score</label>
+        <input type="number" id="scoreB" placeholder="e.g. 8" />
+      </div>
     </div>
-  </div>
 
-  <label for="winner">Who won?</label>
-  <select id="winner">
-    <option value="">Select winning team</option>
-    <option value="A">Team A</option>
-    <option value="B">Team B</option>
-  </select>
-
-  <button class="winner-btn" onclick="submitMatch()">Submit Match</button>
-  <p id="message"></p>
-</main>
-
+    <button onclick="submitMatch()">Submit Match</button>
+    <p id="message"></p>
+  </main>
+  <script src="nav.js"></script>
 </body>
 </html>

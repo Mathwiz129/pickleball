@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Chattpickleball – Login</title>
+  <meta charset="UTF-8" />
+  <title>Chattpickleball – Leaderboard</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="app.js" defer></script>
+  <script src="index.js" defer></script>
   <style>
     body {
       font-family: sans-serif;
@@ -16,79 +16,97 @@
       background-color: #3d9970;
       color: white;
       padding: 1em;
-      text-align: center;
-    }
-    .disclaimer {
-      background: #fff0f0;
-      border-left: 5px solid #cc0000;
-      padding: 1em;
-      margin: 1.5em auto;
-      max-width: 500px;
-      border-radius: 6px;
-    }
-    main {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h2 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+    .enter-btn {
+  background: #ffffff10;
+  color: white;
+  border: none;
+  padding: 0.75em 1.25em;
+  border-radius: 6px;
+  font-size: 1.05em;
+  margin-left: 0.5em;
+  cursor: pointer;
+}
+html {
+  scrollbar-gutter: stable;
+}
+
+
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      padding: 1em;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .player-card {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .card-body {
+      padding: 1em;
+      flex: 1;
+    }
+    .card-stats {
+      background: #3d9970;
+      color: white;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 2em;
-    }
-    .login-box {
-      background: white;
-      padding: 2em;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      box-sizing: border-box;
-      margin: 0 1em;
-    }
-    .login-box h3 {
-      margin-bottom: 1em;
-      color: #3d9970;
-    }
-    input, button {
-      width: 100%;
-      margin-top: 0.5em;
-      padding: 0.75em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    #message {
-      margin-top: 1em;
-      color: #3d9970;
+      min-width: 120px;
       font-weight: bold;
     }
+    .card-stats span:first-child {
+      color: black;
+      font-size: 0.85em;
+      margin-bottom: 0.25em;
+    }
+    .card-stats span:last-child {
+      font-size: 1.5em;
+    }
     @media (max-width: 600px) {
-      .login-box {
-        padding: 1.5em 1em;
-        font-size: 1em;
+      .enter-btn {
+        width: 100%;
+        margin-top: 0.5em;
+        font-size: 1.1em;
       }
-      input, button {
-        font-size: 1em;
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
       }
     }
   </style>
 </head>
 <body>
+  <script src="nav.js"></script>
 
-  <header><h2>Chattpickleball</h2></header>
-
-  <div class="disclaimer">
-    
-    <p><strong>⚠️ </strong>This login isn’t secure. Please use a <strong>completely different password</strong> then you do anywhere else.</p>
-  </div>
-
-  <main>
-    <div class="login-box">
-      <h3>Welcome Back</h3>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="login()">Log In</button>
-      <p>Don't have an account? <a href="signup.html">Create one here</a>.</p>
-      <p id="message"></p>
-    </div>
+  <main style="max-width: 800px; margin: 1em auto;">
+    <h3 style="display: flex; justify-content: space-between; align-items: center;">
+      Leaderboard
+      <select id="sortBy">
+  <option value="rating" selected>Rating</option>
+  <option value="matches">Matches Played</option>
+  <option value="singles">Singles Wins</option>
+  <option value="doubles">Doubles Wins</option>
+  <option value="total">Total Wins</option>
+</select>
+    </h3>
+    <div id="cardContainer" class="card-grid"></div>
   </main>
 </body>
 </html>
