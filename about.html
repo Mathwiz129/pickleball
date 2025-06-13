@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>About – Chattpickleball</title>
   <style>
+    html {
+      scrollbar-gutter: stable;
+    }
     body {
       font-family: sans-serif;
       background: #f5f5f5;
@@ -36,59 +39,65 @@
   </style>
 </head>
 <body>
-
   <header><h1>About Chattpickleball</h1></header>
   <main>
-    <h2>Changelogs</h2>
-    <p>See what’s new, what’s fixed, and what’s coming next:</p>
-    <p><a href="updates.html">View Full Updates Log →</a></p>
+    <h2>About</h2>
+    <p>
+      Chattpickleball is a really barebones app built for a small group of Chattanooga-area players who just want to track games.
+    It’s not meant for broad public use (at least not yet), but if you’ve stumbled across it you can definitely use it-just be careful.
+    </p>
+    <p>
+     Technically, data is public. But there’s no search or indexing, and unless you’re poking around in developer tools, most info is hard to get to. It’s not secure in a traditional sense, but for our tiny use case, it's fine for now.
+    </p>
+    <p>
+      If this ever does expand-adding logins, match verification, privacy layers-I’m open to it. But right now it’s a side project designed for a specific group. Feedback always welcome.
+    </p>
 
     <h2>How Rankings Are Calculated</h2>
-<p>
-  Each player’s rating is calculated on a <strong>scale from 1.00 to 10.00</strong>, based on:
-</p>
-<ul>
-  <li><strong>Win ratio</strong> (wins ÷ matches played)</li>
-  <li><strong>Average scoring margin</strong> (points scored minus points allowed per match)</li>
-  <li><strong>Match volume</strong> (slight penalty applied if fewer than 3 total matches)</li>
-</ul>
+    <p>
+      Each player’s rating is calculated on a <strong>scale from 1.00 to 10.00</strong>, based on:
+    </p>
+    <ul>
+      <li><strong>Win ratio</strong> (wins ÷ matches played)</li>
+      <li><strong>Average scoring margin</strong> (points scored minus points allowed per match)</li>
+      <li><strong>Match volume</strong> (slight penalty applied if fewer than 3 total matches)</li>
+    </ul>
 
-<p>
-  The formula used to calculate each player’s rating is:
-</p>
+    <p>The formula used to calculate each player’s rating is:</p>
 
-<pre style="background:#f9f9f9; padding:1em; border-radius:6px; overflow:auto;">
+    <pre style="background:#f9f9f9; padding:1em; border-radius:6px; overflow:auto;">
 rating = 5 + ((winRatio - 0.5) × 10) + (avgMargin ÷ 5) - penalty
-</pre>
+    </pre>
 
-<p>
-  <strong>Where:</strong>
-</p>
-<ul>
-  <li><code>winRatio</code> = wins / total matches</li>
-  <li><code>avgMargin</code> = (total points scored - total points allowed) / total matches</li>
-  <li><code>penalty</code> = 1.0 if matches played < 3, otherwise 0</li>
-</ul>
+    <p><strong>Where:</strong></p>
+    <ul>
+      <li><code>winRatio</code> = wins / total matches</li>
+      <li><code>avgMargin</code> = (total points scored - total points allowed) / total matches</li>
+      <li><code>penalty</code> = 1.0 if matches played &lt; 3, otherwise 0</li>
+    </ul>
 
-<p>
-  Ratings are then clamped between <strong>1.00 and 10.00</strong> to keep things simple and fair.  
-  A new player starts near 5.00 and earns their way up as they play and win consistently.
-</p>
+    <p>
+      Ratings are clamped between <strong>1.00 and 10.00</strong> to keep things fair and intuitive.
+      Players start near 5.00 and rise as they win with consistency and strong margins.
+    </p>
 
-<h4>Example</h4>
-<p>
-  If a player has played 8 matches with 6 wins, scored 88 points and allowed 64:
-</p>
-
-<pre style="background:#f9f9f9; padding:1em; border-radius:6px; overflow:auto;">
+    <h4>Example</h4>
+    <p>
+      If a player has played 8 matches with 6 wins, scored 88 points and allowed 64:
+    </p>
+    <pre style="background:#f9f9f9; padding:1em; border-radius:6px; overflow:auto;">
 winRatio = 6 / 8 = 0.75
 avgMargin = (88 - 64) / 8 = 3
 rating = 5 + ((0.75 - 0.5) × 10) + (3 ÷ 5) = 8.10
-</pre>
+    </pre>
 
-<p>
-  If that same player had only played 2 matches, a 1.0 penalty would lower their rating to 7.10.
-</p>
+    <p>
+      If that same player had only played 2 matches, a 1.0 penalty would lower their rating to 7.10.
+    </p>
+
+    <h2>Changelogs</h2>
+    <p>See what’s new, what’s fixed, and what’s coming next:</p>
+    <p><a href="updates.html">View Full Updates Log →</a></p>
   </main>
   <script src="nav.js"></script>
 </body>
