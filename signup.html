@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Chattpickleball – Login</title>
+  <title>Chattpickleball – Sign Up</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="app.js" defer></script>
@@ -74,20 +74,20 @@
   </header>
 
   <div class="disclaimer">
-    <strong>⚠️ Heads up:</strong>
+    <strong>⚠️ Quick note:</strong>
     <p style="margin-top: 0.5em;">
-      This login isn’t secure. It’s just for separating players—there’s no password protection or encryption. Please use a <strong>completely different password</strong> than anything else you use.
+      This platform is for friendly use only. Your credentials aren’t protected like a real app. Please use a <strong>completely different password</strong> than anything important!
     </p>
   </div>
 
   <main>
     <div class="login-box">
-      <h3>Welcome Back</h3>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="login()">Log In</button>
+      <h3>Create Account</h3>
+      <input type="text" id="username" placeholder="Choose a username">
+      <input type="password" id="password" placeholder="Choose a password">
+      <button onclick="signup()">Sign Up</button>
       <p style="margin-top: 1em;">
-        Don't have an account? <a href="signup.html">Create one here</a>.
+        Already have an account? <a href="index.html">Log in instead</a>.
       </p>
       <p id="message"></p>
     </div>
